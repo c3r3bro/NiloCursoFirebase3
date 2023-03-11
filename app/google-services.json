@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "1028072461080",
+    "firebase_url": "https://cursofirebase-4ecbe-default-rtdb.firebaseio.com",
+    "project_id": "cursofirebase-4ecbe",
+    "storage_bucket": "cursofirebase-4ecbe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028072461080:android:654c509c8b0e883d9a446d",
+        "android_client_info": {
+          "package_name": "com.example.appnilopartner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028072461080-r684s44kcfbb2s8uvi0l9mnhhq8ve733.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.appnilopartner",
+            "certificate_hash": "bc445bd687b457ce6198372603730f4adf1e86d9"
+          }
+        },
+        {
+          "client_id": "1028072461080-j07nrm7tkb676970l2l3t5qaiuis8m57.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnWv_Z_hWBwmmbcDCcdkN5QghTFWGnZqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028072461080-etmlngu6shnnsngo0c89uj0jrgf4lmsm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028072461080:android:17e50e0e5d3ba1349a446d",
+        "android_client_info": {
+          "package_name": "com.example.cursofirebaseant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028072461080-j07nrm7tkb676970l2l3t5qaiuis8m57.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnWv_Z_hWBwmmbcDCcdkN5QghTFWGnZqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028072461080-etmlngu6shnnsngo0c89uj0jrgf4lmsm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028072461080:android:ce40fe3a88ec5df09a446d",
+        "android_client_info": {
+          "package_name": "com.example.nilocursofirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028072461080-j07nrm7tkb676970l2l3t5qaiuis8m57.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnWv_Z_hWBwmmbcDCcdkN5QghTFWGnZqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028072461080-etmlngu6shnnsngo0c89uj0jrgf4lmsm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
