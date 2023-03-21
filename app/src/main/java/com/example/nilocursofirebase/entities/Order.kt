@@ -5,7 +5,7 @@ import com.google.firebase.firestore.Exclude
 data class Order(
     @get:Exclude var id: String = "",
     var clientId: String = "",
-    var product: Map<String, Product> = hashMapOf(),
+    var products: Map<String, ProductOrder> = hashMapOf(),
     var totalPrice: Double = 0.0,
     var status: Int = 0
 ){
