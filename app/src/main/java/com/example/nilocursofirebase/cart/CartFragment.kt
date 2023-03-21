@@ -1,6 +1,7 @@
 package com.example.nilocursofirebase.cart
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nilocursofirebase.R
 import com.example.nilocursofirebase.databinding.FragmentCartBinding
 import com.example.nilocursofirebase.entities.Product
+import com.example.nilocursofirebase.order.OrderActivity
 import com.example.nilocursofirebase.product.MainAux
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -79,6 +81,7 @@ class CartFragment : BottomSheetDialogFragment(), OnCartListener {
     private fun requestOrder(){
         dismiss()
         (activity as? MainAux)?.clearCart()
+        startActivity(Intent(context, OrderActivity::class.java))
     }
 
     override fun onDestroyView() {
