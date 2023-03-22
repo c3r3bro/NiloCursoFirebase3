@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_padding_min">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTrack"
@@ -66,7 +67,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/chpChat"
             app:layout_constraintBottom_toBottomOf="@id/chpChat"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

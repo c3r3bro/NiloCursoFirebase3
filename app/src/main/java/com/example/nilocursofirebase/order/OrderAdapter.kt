@@ -29,13 +29,14 @@ class OrderAdapter(
         val order = orderList[position]
         holder.setListener(order)
 
-        holder.binding.tvId.text = order.id
+        holder.binding.tvId.text = context.getString(R.string.order_id, order.id)
         var names = ""
         order.products.forEach{
             names += "${it.value.name}, "
         }
         holder.binding.tvProductNames.text = names.dropLast(2) // dropLast elimina los ultimos 2 caracteres de la var names
-        holder.binding.tvTotalPrice.text = order.totalPrice.toString()
+        holder.binding.tvTotalPrice.text = context.getString(R.string.product_full_cart, order.totalPrice)
+        holder.binding.tvStatus.text = context.getString(R.string.order_status, "en espera")
     }
 
     fun add(order: Order){
