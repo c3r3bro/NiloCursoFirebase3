@@ -5,15 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nilocursofirebase.Constants
 import com.example.nilocursofirebase.R
 import com.example.nilocursofirebase.databinding.FragmentCartBinding
+import com.example.nilocursofirebase.entities.Order
 import com.example.nilocursofirebase.entities.Product
+import com.example.nilocursofirebase.entities.ProductOrder
 import com.example.nilocursofirebase.order.OrderActivity
 import com.example.nilocursofirebase.product.MainAux
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class CartFragment : BottomSheetDialogFragment(), OnCartListener {
 
@@ -79,9 +85,28 @@ class CartFragment : BottomSheetDialogFragment(), OnCartListener {
     }
 
     private fun requestOrder(){
-        dismiss()
-        (activity as? MainAux)?.clearCart()
-        startActivity(Intent(context, OrderActivity::class.java))
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let { myUser ->
+            val products = hashMapOf<String, ProductOrder>()
+            adapter.getProducts().forEach{product ->
+            products.put(product.id!!, ProductOrder(product.id!!, product.name!!, product.newQuantity))
+            }
+            val order = Order(clientId = myUser.uid, products = products, totalPrice = totalPrice, status = 1)
+
+            val db = FirebaseFirestore.getInstance()
+            db.collection(Constants.COLL_REQUESTS)
+                .add(order)
+                .addOnSuccessListener {
+                    dismiss()
+                    (activity as? MainAux)?.clearCart()
+                    startActivity(Intent(context, OrderActivity::class.java))
+
+                    Toast.makeText(activity, "Compra realizada.", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(activity, "Error al comprar.", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     override fun onDestroyView() {
