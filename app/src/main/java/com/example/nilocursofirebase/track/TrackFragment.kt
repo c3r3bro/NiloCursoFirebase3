@@ -1,13 +1,16 @@
 package com.example.nilocursofirebase.track
 
 import android.os.Bundle
+import com.example.nilocursofirebase.Constants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nilocursofirebase.databinding.FragmentTrackBinding
 import com.example.nilocursofirebase.entities.Order
 import com.example.nilocursofirebase.order.OrderAux
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TrackFragment: Fragment() {
     private var binding: FragmentTrackBinding? = null
@@ -36,6 +39,7 @@ class TrackFragment: Fragment() {
 
         order?.let {
             updateUI(it)
+            getOrderInRealtime(it.id)
         }
     }
 
@@ -47,5 +51,30 @@ class TrackFragment: Fragment() {
             it.cbSent.isChecked= order.status > 2
             it.cbODelivered.isChecked= order.status > 3
         }
+    }
+
+    private fun getOrderInRealtime(orderId: String){
+        val db = FirebaseFirestore.getInstance()
+
+        val orderRef = db.collection(Constants.COLL_REQUESTS).document(orderId)
+        orderRef.addSnapshotListener { snapshot, error ->
+            if (error != null){
+                Toast.makeText(activity, "Error al consultar esta orden", Toast.LENGTH_SHORT).show()
+                return@addSnapshotListener
+            }
+            if (snapshot != null && snapshot.exists()){
+                val order = snapshot.toObject(Order::class.java)
+                order?.let {
+                    it.id = snapshot.id
+
+                    updateUI(it)
+                }
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }
