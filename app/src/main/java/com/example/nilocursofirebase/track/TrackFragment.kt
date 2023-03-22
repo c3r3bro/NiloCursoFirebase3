@@ -3,10 +3,13 @@ package com.example.nilocursofirebase.track
 import android.os.Bundle
 import com.example.nilocursofirebase.Constants
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.nilocursofirebase.R
 import com.example.nilocursofirebase.databinding.FragmentTrackBinding
 import com.example.nilocursofirebase.entities.Order
 import com.example.nilocursofirebase.order.OrderAux
@@ -39,7 +42,10 @@ class TrackFragment: Fragment() {
 
         order?.let {
             updateUI(it)
+
             getOrderInRealtime(it.id)
+
+            setupActionBar()
         }
     }
 
@@ -73,8 +79,32 @@ class TrackFragment: Fragment() {
         }
     }
 
+    private fun setupActionBar(){
+        (activity as? AppCompatActivity)?.let {
+            it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            it.supportActionBar?.title = getString(R.string.track_title)
+            setHasOptionsMenu(true)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home){
+            activity?.onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    override fun onDestroy() {
+        (activity as? AppCompatActivity)?.let {
+            it.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            it.supportActionBar?.title = getString(R.string.order_title)
+            setHasOptionsMenu(false)
+        }
+        super.onDestroy()
     }
 }
