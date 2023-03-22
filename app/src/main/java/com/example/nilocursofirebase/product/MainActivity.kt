@@ -1,5 +1,6 @@
 package com.example.nilocursofirebase.product
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -14,6 +15,7 @@ import com.example.nilocursofirebase.cart.CartFragment
 import com.example.nilocursofirebase.databinding.ActivityMainBinding
 import com.example.nilocursofirebase.detail.DetailFragment
 import com.example.nilocursofirebase.entities.Product
+import com.example.nilocursofirebase.order.OrderActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
@@ -154,6 +156,7 @@ class MainActivity : AppCompatActivity(), OnProductListener, MainAux {
                         }
                     }
             }
+            R.id.action_order_history -> startActivity(Intent(this, OrderActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }

@@ -49,10 +49,10 @@ class OrderActivity : AppCompatActivity(), OnOrderListener {
     }
 
     override fun onTrack(order: Order) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onStartChat(order: Order) {
-        TODO("Not yet implemented")
+
     }
 }

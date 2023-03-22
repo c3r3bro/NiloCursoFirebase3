@@ -87,6 +87,7 @@ class CartFragment : BottomSheetDialogFragment(), OnCartListener {
     private fun requestOrder(){
         val user = FirebaseAuth.getInstance().currentUser
         user?.let { myUser ->
+            enableUI(false)
             val products = hashMapOf<String, ProductOrder>()
             adapter.getProducts().forEach{product ->
             products.put(product.id!!, ProductOrder(product.id!!, product.name!!, product.newQuantity))
@@ -106,6 +107,16 @@ class CartFragment : BottomSheetDialogFragment(), OnCartListener {
                 .addOnFailureListener {
                     Toast.makeText(activity, "Error al comprar.", Toast.LENGTH_SHORT).show()
                 }
+                .addOnCompleteListener {
+                    enableUI(true)
+                }
+        }
+    }
+
+    private fun enableUI(enable: Boolean){
+        binding?.let {
+            it.ibCancel.isEnabled = enable
+            it.efab.isEnabled = enable
         }
     }
 
