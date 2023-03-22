@@ -16,6 +16,14 @@ class OrderAdapter(
 
     private lateinit var context: Context
 
+    private val aValues: Array<String> by lazy {
+        context.resources.getStringArray(R.array.status_value)
+    }
+
+    private val aKeys: Array<Int> by lazy {
+        context.resources.getIntArray(R.array.status_key).toTypedArray()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
         val view = LayoutInflater.from(context).inflate(R.layout.item_order, parent, false)
@@ -36,7 +44,10 @@ class OrderAdapter(
         }
         holder.binding.tvProductNames.text = names.dropLast(2) // dropLast elimina los ultimos 2 caracteres de la var names
         holder.binding.tvTotalPrice.text = context.getString(R.string.product_full_cart, order.totalPrice)
-        holder.binding.tvStatus.text = context.getString(R.string.order_status, "en espera")
+
+        val index = aKeys.indexOf(order.status)
+        val statusStr = if (index != -1) aValues[index] else context.getString(R.string.order_status_unknow)
+        holder.binding.tvStatus.text = context.getString(R.string.order_status, statusStr)
     }
 
     fun add(order: Order){
