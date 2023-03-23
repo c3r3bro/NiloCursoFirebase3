@@ -25,5 +25,6 @@
     <string name="order_status_unknow">Desconocido</string>
 
     <string name="track_title">Rastreo</string>
+    <string name="hint_chat">escribe algo..</string>
 
 </resources>
