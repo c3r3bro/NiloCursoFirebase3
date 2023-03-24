@@ -1,8 +1,13 @@
 package com.example.nilocursofirebase.chat
 
+import android.content.Context
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nilocursofirebase.R
 import com.example.nilocursofirebase.databinding.ItemChatBinding
 import com.example.nilocursofirebase.entities.Message
 
@@ -11,16 +16,36 @@ class ChatAdapter(
     private val listener: OnChatListener
 ) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
+    private lateinit var context: Context
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
+        context = parent.context
+        val view = LayoutInflater.from(context).inflate(R.layout.item_chat, parent, false)
+        return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount(): Int = messageList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val message = messageList[position]
+
+        holder.setListener(message)
+
+        var gravity = Gravity.END
+        var background = ContextCompat.getDrawable(context, R.drawable.background_chat_client)
+        var textColor = ContextCompat.getColor(context, R.color.colorOnSecondary)
+
+        if (!message.isSentByMe()){
+            gravity = Gravity.START
+            background = ContextCompat.getDrawable(context, R.drawable.background_chat_support)
+            textColor = ContextCompat.getColor(context, R.color.colorOnPrimary)
+        }
+
+        holder.binding.root.gravity = gravity
+
+        holder.binding.tvMessage.background = background
+        holder.binding.tvMessage.setTextColor(textColor)
+        holder.binding.tvMessage.text = message.message
     }
 
     fun add(message: Message) {
