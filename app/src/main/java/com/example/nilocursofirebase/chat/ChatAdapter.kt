@@ -35,14 +35,27 @@ class ChatAdapter(
         var background = ContextCompat.getDrawable(context, R.drawable.background_chat_client)
         var textColor = ContextCompat.getColor(context, R.color.colorOnSecondary)
 
+        val marginHorizontal = context.resources.getDimensionPixelSize(R.dimen.chat_margin_horizontal)
+        val params = holder.binding.tvMessage.layoutParams as ViewGroup.MarginLayoutParams
+        params.marginStart = marginHorizontal
+        params.marginEnd = 0
+        params.topMargin = 0
+
+        if (position>0 && message.isSentByMe() != messageList[position-1].isSentByMe()){
+            params.topMargin = context.resources.getDimensionPixelSize(R.dimen.common_padding_min)
+        }
+
         if (!message.isSentByMe()){
             gravity = Gravity.START
             background = ContextCompat.getDrawable(context, R.drawable.background_chat_support)
             textColor = ContextCompat.getColor(context, R.color.colorOnPrimary)
+            params.marginStart = 0
+            params.marginEnd = marginHorizontal
         }
 
         holder.binding.root.gravity = gravity
 
+        holder.binding.tvMessage.layoutParams = params
         holder.binding.tvMessage.background = background
         holder.binding.tvMessage.setTextColor(textColor)
         holder.binding.tvMessage.text = message.message
