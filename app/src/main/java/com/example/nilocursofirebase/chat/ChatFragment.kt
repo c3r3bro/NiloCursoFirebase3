@@ -12,6 +12,9 @@ import com.example.nilocursofirebase.entities.Message
 import com.example.nilocursofirebase.entities.Order
 import com.example.nilocursofirebase.order.OrderAux
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -53,7 +56,42 @@ class ChatFragment : Fragment(), OnChatListener {
     }
 
     private fun setupRealtimeDatabase() {
+        order?.let {
+            val database = Firebase.database
+            val chatRef = database.getReference(Constants.PATH_CHATS).child(it.id)
+            val childListener = object: ChildEventListener{
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    val message = snapshot.getValue(Message::class.java)
+                    message?.let { message ->
+                    snapshot.key?.let {
+                      message.id = it
+                    }
+                    FirebaseAuth.getInstance().currentUser?.let { user ->
+                        message.myUid = user.uid
+                    }
+                        adapter.add(message)
+                        binding?.recyclerView?.scrollToPosition(adapter.itemCount-1)
+                    }
+                }
 
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            }
+            chatRef.addChildEventListener(childListener)
+        }
     }
 
     private fun setupRecyclerView() {
