@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nilocursofirebase.Constants
 import com.example.nilocursofirebase.R
+import com.example.nilocursofirebase.chat.ChatFragment
 import com.example.nilocursofirebase.databinding.ActivityOrderBinding
 import com.example.nilocursofirebase.entities.Order
 import com.example.nilocursofirebase.track.TrackFragment
@@ -63,6 +64,15 @@ class OrderActivity : AppCompatActivity(), OnOrderListener, OrderAux {
     }
 
     override fun onStartChat(order: Order) {
+        orderSelected = order
+
+        val fragment = ChatFragment()
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.containerMain, fragment)
+            .addToBackStack(null)
+            .commit()
 
     }
 
