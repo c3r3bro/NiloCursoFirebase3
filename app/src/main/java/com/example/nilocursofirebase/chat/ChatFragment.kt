@@ -3,10 +3,13 @@ package com.example.nilocursofirebase.chat
 import android.os.Bundle
 import com.example.nilocursofirebase.Constants
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nilocursofirebase.R
 import com.example.nilocursofirebase.databinding.FragmentChatBinding
 import com.example.nilocursofirebase.entities.Message
 import com.example.nilocursofirebase.entities.Order
@@ -52,6 +55,7 @@ class ChatFragment : Fragment(), OnChatListener {
     private fun getOrder() {
         order = (activity as? OrderAux)?.getOrderSelected()
         order?.let {
+            setupActionBar()
             setupRealtimeDatabase()
         }
     }
@@ -60,7 +64,7 @@ class ChatFragment : Fragment(), OnChatListener {
         order?.let {
             val database = Firebase.database
             val chatRef = database.getReference(Constants.PATH_CHATS).child(it.id)
-            val childListener = object: ChildEventListener{
+            val childListener = object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     /*val message = snapshot.getValue(Message::class.java)
                     message?.let { message ->
@@ -75,37 +79,37 @@ class ChatFragment : Fragment(), OnChatListener {
                     }*/
                     getMessage(snapshot)?.let {
                         adapter.add(it)
-                        binding?.recyclerView?.scrollToPosition(adapter.itemCount-1)
+                        binding?.recyclerView?.scrollToPosition(adapter.itemCount - 1)
                     }
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                 /*   val message = snapshot.getValue(Message::class.java)
-                    message?.let { message ->
-                        snapshot.key?.let {
-                            message.id = it
-                        }
-                        FirebaseAuth.getInstance().currentUser?.let { user ->
-                            message.myUid = user.uid
-                        }
-                        adapter.update(message)
-                    }*/
+                    /*   val message = snapshot.getValue(Message::class.java)
+                       message?.let { message ->
+                           snapshot.key?.let {
+                               message.id = it
+                           }
+                           FirebaseAuth.getInstance().currentUser?.let { user ->
+                               message.myUid = user.uid
+                           }
+                           adapter.update(message)
+                       }*/
                     getMessage(snapshot)?.let {
                         adapter.update(it)
                     }
                 }
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
-                 /*   val message = snapshot.getValue(Message::class.java)
-                    message?.let { message ->
-                        snapshot.key?.let {
-                            message.id = it
-                        }
-                        FirebaseAuth.getInstance().currentUser?.let { user ->
-                            message.myUid = user.uid
-                        }
-                        adapter.delete(message)
-                    }*/
+                    /*   val message = snapshot.getValue(Message::class.java)
+                       message?.let { message ->
+                           snapshot.key?.let {
+                               message.id = it
+                           }
+                           FirebaseAuth.getInstance().currentUser?.let { user ->
+                               message.myUid = user.uid
+                           }
+                           adapter.delete(message)
+                       }*/
                     getMessage(snapshot)?.let {
                         adapter.delete(it)
                     }
@@ -115,7 +119,8 @@ class ChatFragment : Fragment(), OnChatListener {
 
                 override fun onCancelled(error: DatabaseError) {
                     binding?.let {
-                        Snackbar.make(it.root, "Error al cargar chat.", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(it.root, "Error al cargar chat.", Snackbar.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -123,7 +128,7 @@ class ChatFragment : Fragment(), OnChatListener {
         }
     }
 
-    private fun getMessage(snapshot: DataSnapshot): Message?{
+    private fun getMessage(snapshot: DataSnapshot): Message? {
         snapshot.getValue(Message::class.java)?.let { message ->
             snapshot.key?.let {
                 message.id = it
@@ -147,16 +152,16 @@ class ChatFragment : Fragment(), OnChatListener {
             }
         }
 
-       /* (1..20).forEach {
-            adapter.add(
-                Message(
-                    it.toString(),
-                    if (it % 4 == 0) "hola como estas?, hola como estas?, hola como estas?" else "hola como estas?",
-                    if (it % 3 == 0) "tu" else "yo",
-                    "yo"
-                )
-            )
-        }*/
+        /* (1..20).forEach {
+             adapter.add(
+                 Message(
+                     it.toString(),
+                     if (it % 4 == 0) "hola como estas?, hola como estas?, hola como estas?" else "hola como estas?",
+                     if (it % 3 == 0) "tu" else "yo",
+                     "yo"
+                 )
+             )
+         }*/
     }
 
     private fun setupButtons() {
@@ -190,12 +195,55 @@ class ChatFragment : Fragment(), OnChatListener {
         }
     }
 
+    private fun setupActionBar() {
+        (activity as? AppCompatActivity)?.let {
+            it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            it.supportActionBar?.title = getString(R.string.chat_title)
+            setHasOptionsMenu(true)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            activity?.onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
 
-    override fun deleteMessage(message: Message) {
+    override fun onDestroy() {
+        (activity as? AppCompatActivity)?.let {
+            it.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            it.supportActionBar?.title = getString(R.string.order_title)
+            setHasOptionsMenu(false)
+            super.onDestroy()
+        }
+    }
 
+    override fun deleteMessage(message: Message) {
+        order?.let {
+            val database = Firebase.database
+            val messageRef =
+                database.getReference(Constants.PATH_CHATS).child(it.id).child(message.id)
+            messageRef.removeValue { error, ref ->
+                binding?.let {
+                    if (error != null) {
+                        Snackbar.make(
+                            it.root,
+                            "Error al borrar mensaje.",
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .show()
+                    } else {
+                        Snackbar.make(it.root, "Mensaje borrado!", Snackbar.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+        }
     }
 }
