@@ -9,6 +9,7 @@ data class Message(
     @get:Exclude var myUid: String = ""
 ){
 
+    @Exclude
     fun isSentByMe(): Boolean = sender.equals(myUid)
 
     override fun equals(other: Any?): Boolean {
