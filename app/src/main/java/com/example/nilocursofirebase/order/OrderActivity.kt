@@ -73,7 +73,6 @@ class OrderActivity : AppCompatActivity(), OnOrderListener, OrderAux {
             .add(R.id.containerMain, fragment)
             .addToBackStack(null)
             .commit()
-
     }
 
     override fun getOrderSelected(): Order = orderSelected
