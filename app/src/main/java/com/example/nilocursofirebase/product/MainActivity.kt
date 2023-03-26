@@ -3,11 +3,14 @@ package com.example.nilocursofirebase.product
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.edit
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.nilocursofirebase.Constants
 import com.example.nilocursofirebase.R
@@ -46,6 +49,28 @@ class MainActivity : AppCompatActivity(), OnProductListener, MainAux {
                 val user = FirebaseAuth.getInstance().currentUser
                 if (user != null) {
                     Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
+
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+                    val token = preferences.getString(Constants.PROP_TOKEN, null)
+
+                    token?.let {
+                        val db = FirebaseFirestore.getInstance()
+                        val tokenMap = hashMapOf(Pair(Constants.PROP_TOKEN, token))
+
+                        db.collection(Constants.COLL_USERS)
+                            .document(user.uid)
+                            .collection(Constants.COLL_TOKENS)
+                            .add(tokenMap)
+                            .addOnSuccessListener {
+                                Log.i("registered token", token)
+                                preferences.edit {
+                                    putString(Constants.PROP_TOKEN, null).apply()
+                                }
+                            }
+                            .addOnFailureListener {
+                                Log.i("no registered token", token)
+                            }
+                    }
                 }
             } else {
                 if (response == null) {
