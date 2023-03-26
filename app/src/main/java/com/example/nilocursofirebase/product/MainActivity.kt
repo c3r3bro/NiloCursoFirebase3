@@ -101,6 +101,16 @@ class MainActivity : AppCompatActivity(), OnProductListener, MainAux {
         configAuth()
         configRecyclerView()
         configButtons()
+
+        //FCM
+  /*      FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful){
+                val token = task.result
+                Log.i("get token", token.toString())
+            } else {
+                Log.i("get token fail", task.exception.toString())
+            }
+        }*/
     }
 
     private fun configAuth() {
