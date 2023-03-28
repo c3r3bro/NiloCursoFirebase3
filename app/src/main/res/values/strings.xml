@@ -31,8 +31,9 @@
     <string name="notification_channel_id_default">general</string>
     <string name="notification_channel_name_default">Generales</string>
 
-    <string name="facebook_application_id" translatable="false">559056669661071</string>
-    <!-- Facebook Application ID, prefixed by 'fb'. Enables Chrome Custom tabs. -->
-    <string name="facebook_login_protocol_scheme" translatable="false">fb559056669661071</string>
+
+    <string name="facebook_app_id">559056669661071</string>
+    <string name="fb_login_protocol_scheme">fb559056669661071</string>
+    <string name="facebook_client_token">8023bad4e374390c041b26ee43777783</string>
 
 </resources>
